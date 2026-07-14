@@ -80,7 +80,7 @@ if (!skill.replace(/\s+/g, ' ').includes('operator-only `references/rest-api.md`
 }
 
 const hermesReadme = await readFile(join(root, 'examples/bugagent/hermes-agent/README.md'), 'utf8');
-if (!hermesReadme.includes('public community preview; private pilot validation in progress')) {
+if (!hermesReadme.includes('public community preview; private pilot validation pending')) {
   failures.push('Hermes public-preview/private-pilot status is missing');
 }
 if (!hermesReadme.replace(/\s+/g, ' ').includes('MCP tool filter does not enforce browser or network egress')) {
