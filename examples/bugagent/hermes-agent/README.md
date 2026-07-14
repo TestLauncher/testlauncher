@@ -1,6 +1,6 @@
 # bugAgent for Hermes Agent
 
-Status: **public community preview; private pilot validation in progress**
+Status: **public community preview; private pilot validation pending**
 
 This example lets Hermes Agent execute a human-approved bugAgent test suite and
 return the results to one governed test run. It is useful when you want Hermes'
