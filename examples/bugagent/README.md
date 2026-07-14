@@ -7,7 +7,7 @@ customer data, private product source, or required paid dependency.
 | --- | --- | --- |
 | [REST API quickstart](./api-quickstart/) | Scripts, CI jobs, failure reporting, and small integrations | Bug reporting is available on Free |
 | [MCP quickstart](./mcp/) | Claude Code, Cursor, and other MCP clients | Bug-report tools are available on Free |
-| [Hermes Agent](./hermes-agent/) | Running an approved suite with an external agent | Community preview; requires the Test Cases entitlement |
+| [Hermes Agent](./hermes-agent/) | Running an approved suite with an external agent | Community preview; bounded evaluation is available on Free |
 
 ## Security rules
 

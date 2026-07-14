@@ -7,10 +7,11 @@ return the results to one governed test run. It is useful when you want Hermes'
 model/runtime flexibility without moving canonical test plans, permissions,
 results, or release decisions out of bugAgent.
 
-The code is MIT licensed. Suite execution requires bugAgent's Test Cases
-entitlement. This integration is not maintained, endorsed, or supported by
-Nous Research. It is runnable for controlled evaluation, but it is not a
-generally available or supported production integration yet.
+The code is MIT licensed. A bounded suite-execution evaluation is available on
+bugAgent Free; paid plans remove the Free catalog and run quotas. This
+integration is not maintained, endorsed, or supported by Nous Research. It is
+runnable for controlled evaluation, but it is not a generally available or
+supported production integration yet.
 
 ## How the execution works
 
@@ -31,13 +32,40 @@ They are not included in the bugAgent plan or result contract.
 
 ## Prerequisites
 
-- bugAgent workspace with Test Cases enabled;
+- bugAgent workspace with Test Cases enabled (the bounded Free evaluation is
+  sufficient for this example);
 - one suite assigned to one non-production project;
 - a synthetic target-site account when login is required;
 - Hermes Agent with browser tooling configured;
 - an isolated runtime with externally enforced browser/network egress limited
   to the approved target and required bugAgent endpoint;
 - a dedicated bugAgent key with `test_runs:read` and `test_runs:write`.
+
+## Free plan limits and abuse controls
+
+Free is intentionally useful for one small governed pilot, not unattended or
+high-volume execution:
+
+- 10 stored test cases, 1 suite, and 3 folders;
+- 128 KiB of structured content per case;
+- 10 total test runs per UTC calendar month, including at most 3 Hermes or
+  other external-agent runs;
+- 1 active external run at a time and at most 10 cases in each external plan;
+- 2 active workspace API keys, allowing one dedicated Hermes key alongside one
+  general integration key;
+- 30 execution-contract requests per API key and 60 per workspace per minute.
+
+Retry `start_test_plan` with the same `external_run_id`; a matching retry
+resumes the run without consuming another monthly run. Deleting a run does not
+reset usage. Abort an interrupted run before starting another. Free can use URL
+references, while test-case file attachments, AI case generation, AI tag
+suggestions, and Figma import require Team or Enterprise.
+
+Completed and aborted external runs are final. They cannot be changed back to
+an active state to recycle monthly quota.
+
+Hermes browser, model, and network usage is customer-side. Restrict target
+hosts and egress in the Hermes runtime even when bugAgent quotas are active.
 
 ## Install the community skill
 
@@ -109,6 +137,11 @@ Verify in bugAgent that:
   runbook from a separate terminal outside the restricted Hermes session.
 - Repeated or non-increasing plan cursor: stop and abort; never continue a
   cyclic or oversized pagination response.
+- `429` request limit: honor `Retry-After`; do not change the idempotency key.
+- `429` monthly Free quota: stop until the next UTC calendar month or contact
+  bugAgent about a paid plan. Repeated retries cannot bypass the quota.
+- Active-run limit: resume or abort the existing run instead of minting another
+  `external_run_id`.
 
 Product documentation:
 
