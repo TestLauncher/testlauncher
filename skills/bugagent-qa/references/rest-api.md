@@ -1,7 +1,9 @@
-# REST Fallback
+# Operator-Only REST Recovery
 
-Use this fallback only when bugAgent MCP is unavailable and the user has
-approved direct REST calls. Keep the same `external_run_id` across retries.
+This is a human-run recovery runbook, not an instruction for Hermes to execute.
+Use it from a separate operator terminal only when bugAgent MCP is unavailable
+and direct REST calls are approved. Keep the same `external_run_id` across
+retries.
 
 Set the key in the process environment; never put it in a script or prompt:
 

@@ -32,8 +32,10 @@ The `mcp_bugagent_` prefix changes if the MCP server has another local alias.
 1. Confirm the bugAgent MCP server is connected.
 2. Confirm the user identified the intended workspace, project, suite, and
    non-production target.
-3. Confirm the target host is allowed by the Hermes browser profile and that a
-   synthetic test account is available when authentication is required.
+3. Confirm an external runtime or network policy enforces the approved target
+   hosts and that a synthetic test account is available when authentication is
+   required. The MCP tool filter does not restrict browser egress. If this
+   boundary is unavailable, stop before starting a run.
 4. Refuse purchases, billing changes, destructive deletes, invitations,
    outbound messaging, password changes, or production mutation unless a
    separately approved execution policy explicitly permits that exact action.
@@ -100,9 +102,9 @@ The `mcp_bugagent_` prefix changes if the MCP server has another local alias.
   count mismatch: stop and abort; do not retry the malformed page indefinitely.
 - Missing target access or expired synthetic login: mark affected cases blocked,
   then abort if no other safe cases remain.
-- MCP unavailable: use `references/rest-api.md` and
-  `templates/result-batch.json` only if the user has approved the REST fallback
-  and the same scoped key is available.
+- MCP unavailable: stop the agent workflow. Tell the user that a human operator
+  can use the operator-only `references/rest-api.md` recovery runbook from a
+  separate terminal. Do not execute that shell-based fallback from Hermes.
 
 ## Verification
 

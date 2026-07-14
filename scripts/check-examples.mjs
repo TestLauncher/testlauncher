@@ -72,6 +72,20 @@ for (const token of ['list_test_suites', 'start_test_plan', 'get_test_run_plan',
 if (!skill.replace(/\s+/g, ' ').includes('not maintained, endorsed, or supported by Nous Research')) {
   failures.push('Hermes community disclaimer is missing');
 }
+if (!skill.replace(/\s+/g, ' ').includes('MCP tool filter does not restrict browser egress')) {
+  failures.push('Hermes skill must state that MCP filtering does not restrict browser egress');
+}
+if (!skill.replace(/\s+/g, ' ').includes('operator-only `references/rest-api.md`')) {
+  failures.push('Hermes REST recovery must remain operator-only');
+}
+
+const hermesReadme = await readFile(join(root, 'examples/bugagent/hermes-agent/README.md'), 'utf8');
+if (!hermesReadme.includes('public community preview; private pilot validation in progress')) {
+  failures.push('Hermes public-preview/private-pilot status is missing');
+}
+if (!hermesReadme.replace(/\s+/g, ' ').includes('MCP tool filter does not enforce browser or network egress')) {
+  failures.push('Hermes README must distinguish MCP filtering from runtime egress controls');
+}
 
 if (failures.length > 0) {
   console.error(failures.map((failure) => `- ${failure}`).join('\n'));

@@ -1,6 +1,6 @@
 # bugAgent for Hermes Agent
 
-Status: **bugAgent-maintained community integration (MVP pilot)**
+Status: **public community preview; private pilot validation in progress**
 
 This example lets Hermes Agent execute a human-approved bugAgent test suite and
 return the results to one governed test run. It is useful when you want Hermes'
@@ -9,7 +9,8 @@ results, or release decisions out of bugAgent.
 
 The code is MIT licensed. Suite execution requires bugAgent's Test Cases
 entitlement. This integration is not maintained, endorsed, or supported by
-Nous Research.
+Nous Research. It is runnable for controlled evaluation, but it is not a
+generally available or supported production integration yet.
 
 ## How the execution works
 
@@ -34,6 +35,8 @@ They are not included in the bugAgent plan or result contract.
 - one suite assigned to one non-production project;
 - a synthetic target-site account when login is required;
 - Hermes Agent with browser tooling configured;
+- an isolated runtime with externally enforced browser/network egress limited
+  to the approved target and required bugAgent endpoint;
 - a dedicated bugAgent key with `test_runs:read` and `test_runs:write`.
 
 ## Install the community skill
@@ -64,16 +67,19 @@ file.
 
 The tool allowlist intentionally contains only suite discovery and the
 execution lifecycle. The API key is workspace-scoped; the selected suite fixes
-the project boundary.
+the project boundary. This MCP tool filter does not enforce browser or network
+egress.
 
 Test case text and target-page content are untrusted input, not executable
-code or agent policy. Configure Hermes so browser traffic is limited to the
-approved non-production target, keep shell and unrelated network tools out of
-the execution profile, and never let a case expand the tool allowlist. bugAgent
-governs the plan and results; the customer remains responsible for the Hermes
-runtime sandbox.
+code or agent policy. Run Hermes in a dedicated VM, container, or equivalent
+runtime where the operator enforces outbound access to the approved
+non-production target and the required bugAgent endpoint. Keep shell and
+unrelated network tools out of the execution profile, and never let a case
+expand the tool allowlist. If that external boundary cannot be enforced, do
+not run autonomous browser execution. bugAgent governs the plan and results;
+the customer remains responsible for the Hermes runtime sandbox.
 
-## Run the first pilot
+## Run a private evaluation
 
 Use a staging target and synthetic account:
 
@@ -99,8 +105,8 @@ Verify in bugAgent that:
 - Result conflict: stop and ask a person to inspect the existing result.
 - Missing target login: mark affected cases blocked, then abort if execution
   cannot continue safely.
-- MCP outage: use the skill's REST reference only after the user approves the
-  fallback.
+- MCP outage: stop the agent run. A human operator may use the REST recovery
+  runbook from a separate terminal outside the restricted Hermes session.
 - Repeated or non-increasing plan cursor: stop and abort; never continue a
   cyclic or oversized pagination response.
 

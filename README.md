@@ -2,10 +2,9 @@
 
 > Agentic quality infrastructure for zero-tolerance enterprises.
 
-This is the public home for **TestLauncher** — working examples, integration
-samples, and the company handbook for building on the TestLauncher platform
-(Launch App, bugAgent, qualThread, ARC, manualTesting, and the open
-[OQA](https://oqa.ai) standard).
+This is the public home for **TestLauncher** — working examples and integration
+samples for building on the TestLauncher platform (Launch App, bugAgent,
+qualThread, ARC, manualTesting, and the open [OQA](https://oqa.ai) standard).
 
 ## Start with bugAgent
 
@@ -17,8 +16,9 @@ copy into another repository:
   GitHub Actions run.
 - [bugAgent MCP quickstart](./examples/bugagent/mcp/) - connect an AI client and
   use project-scoped bug-report workflows.
-- [bugAgent for Hermes Agent](./examples/bugagent/hermes-agent/) - execute a
-  human-curated suite through a bugAgent-maintained community skill.
+- [bugAgent for Hermes Agent](./examples/bugagent/hermes-agent/) - public
+  community preview for executing a human-curated suite through a
+  bugAgent-maintained skill.
 
 Bug-report API and MCP access can be used on the Free plan. Individual tools,
 including Test Cases, continue to follow their product entitlement.
@@ -27,7 +27,6 @@ including Test Cases, continue to follow their product entitlement.
 
 - `examples/` - runnable product integrations and starter code.
 - `skills/` - installable agent skills published in standard skill-repo form.
-- `handbook/` - public quality practices as they are released.
 - `.github/workflows/` - checks that keep every published example runnable and
   free of committed credentials.
 
