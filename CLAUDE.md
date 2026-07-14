@@ -7,7 +7,9 @@ It is the home for **working examples** of building on the TestLauncher product
 suite (Launch App, bugAgent, qualThread, ARC, manualTesting, the open OQA
 standard) and the **company handbook**.
 
-Currently a stub (README + LICENSE). Content is added in a later phase.
+The repository contains runnable examples under `examples/`, installable agent
+skills under `skills/`, and public operating material under `handbook/` as it is
+released.
 
 ## Audience
 This repo is **public and developer-facing** — written for engineers at
@@ -17,6 +19,8 @@ clean, accurate, and runnable. Nothing proprietary or internal-only.
 ## Conventions (when adding content)
 - **Examples** live under `examples/<topic>/`, each self-contained with its own
   README and runnable instructions. Prefer small, copy-pasteable samples.
+- **Skills** live under `skills/<skill-name>/` so compatible agent runtimes can
+  install them directly from this repository.
 - **Handbook** content is Markdown under `handbook/`.
 - Use the canonical product names and casing: Launch App, bugAgent, qualThread,
   ARC, manualTesting, OQA. Link products to their `*.testlauncher.com` homes.

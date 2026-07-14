@@ -1,0 +1,41 @@
+# Copy bugagent.mjs to .github/scripts/bugagent.mjs before using this workflow.
+name: Tests with bugAgent failure reporting
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Run tests
+        id: tests
+        continue-on-error: true
+        run: npm test
+      - name: Report failed run to bugAgent
+        if: steps.tests.outcome == 'failure'
+        env:
+          BUGAGENT_API_KEY: ${{ secrets.BUGAGENT_API_KEY }}
+          BUGAGENT_PROJECT: ${{ vars.BUGAGENT_PROJECT }}
+        run: |
+          test -n "$BUGAGENT_PROJECT" || { echo "BUGAGENT_PROJECT is required" >&2; exit 1; }
+          node .github/scripts/bugagent.mjs report \
+            --title "CI failed: ${{ github.repository }} #${{ github.run_number }}" \
+            --description "GitHub Actions run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --project "$BUGAGENT_PROJECT" \
+            --severity s3
+      - name: Preserve failed job status
+        if: steps.tests.outcome == 'failure'
+        run: exit 1
