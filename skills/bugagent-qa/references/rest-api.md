@@ -42,7 +42,7 @@ curl --fail-with-body \
   https://app.bugagent.com/api/v1/test-executions/RUN_UUID/results \
   -H "Authorization: Bearer ${BUGAGENT_API_KEY}" \
   -H 'Content-Type: application/json' \
-  --data @result-batch.json
+  --data @templates/result-batch.json
 ```
 
 The API accepts 1-200 unique case IDs that already belong to the run. Prefer
