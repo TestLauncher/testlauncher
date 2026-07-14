@@ -27,6 +27,22 @@ curl --fail-with-body https://app.bugagent.com/api/v1/test-executions \
 
 A new run returns `201`; an idempotent resume returns `200` with the same run.
 
+## Free quotas and throttling
+
+Free allows 10 stored cases, 1 suite, 3 folders, 10 total runs per UTC month,
+and at most 3 external-agent runs per month. Only 1 external run may be active,
+and its immutable plan may contain at most 10 cases. Free also allows 2 active
+workspace API keys. Deleting a run does not reset monthly usage, and completed
+or aborted external runs cannot be reopened.
+
+Execution-contract responses expose `RateLimit-Limit`,
+`RateLimit-Remaining`, and `RateLimit-Reset`. Free permits 30 requests per API
+key and 60 per workspace per minute. A request-rate `429` includes
+`Retry-After`; wait and retry the same operation. A monthly-quota `429` requires
+waiting for the next UTC calendar month or moving to a paid plan. A `409` may
+mean another external run is still active. A `503` means the distributed
+limiter is unavailable and the API has failed closed; honor `Retry-After`.
+
 ## Read plan pages and canonical state
 
 ```bash

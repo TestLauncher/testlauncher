@@ -1,7 +1,7 @@
 ---
 name: bugagent-qa
 description: Execute a human-curated bugAgent test suite with Hermes browser tools and return retry-safe results to the governed bugAgent run.
-version: 0.1.0
+version: 0.1.1
 author: bugAgent
 metadata:
   hermes:
@@ -98,6 +98,12 @@ The `mcp_bugagent_` prefix changes if the MCP server has another local alias.
 - Result conflict: stop changing that case and ask a human to inspect the
   existing result.
 - Project-scope mismatch: stop and ask a bugAgent manager to repair the suite.
+- Free one-active-run limit: resume the named run or abort it before starting a
+  different logical execution. Never rotate IDs to evade the limit.
+- `429` with `Retry-After`: wait for the request-rate window and retry with the
+  same `external_run_id` or identical result batch.
+- Free monthly run quota: stop until the next UTC calendar month or ask the
+  user to contact bugAgent about a paid plan. Do not loop or create another key.
 - Repeated, missing, or non-increasing cursor, duplicate plan entry, or plan
   count mismatch: stop and abort; do not retry the malformed page indefinitely.
 - Missing target access or expired synthetic login: mark affected cases blocked,

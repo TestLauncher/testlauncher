@@ -20,8 +20,11 @@ copy into another repository:
   community preview for executing a human-curated suite through a
   bugAgent-maintained skill.
 
-Bug-report API and MCP access can be used on the Free plan. Individual tools,
-including Test Cases, continue to follow their product entitlement.
+Bug-report API and MCP access can be used on the Free plan. Free also includes
+a bounded Test Cases catalog and Hermes/external-agent evaluation flow; see the
+[Hermes example limits](./examples/bugagent/hermes-agent/#free-plan-limits-and-abuse-controls)
+before automating it. Paid plans remove those catalog and run quotas while
+general platform protections still apply.
 
 ## Repository layout
 
