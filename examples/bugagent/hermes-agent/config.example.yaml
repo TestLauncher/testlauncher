@@ -1,0 +1,17 @@
+mcp_servers:
+  bugagent:
+    url: "https://mcp.bugagent.com/mcp"
+    headers:
+      Authorization: "Bearer ${BUGAGENT_API_KEY}"
+    enabled: true
+    timeout: 120
+    supports_parallel_tool_calls: false
+    tools:
+      include:
+        - list_test_suites
+        - start_test_plan
+        - get_test_run_plan
+        - report_test_results
+        - abort_test_run
+      resources: false
+      prompts: false

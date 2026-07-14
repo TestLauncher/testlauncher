@@ -1,0 +1,11 @@
+{
+  "results": [
+    {
+      "case_id": "CASE_UUID",
+      "status": "failed",
+      "actual_result": "Checkout returned an HTTP 500 after submit.",
+      "notes": "Reproduced once with the synthetic staging account.",
+      "duration_seconds": 42
+    }
+  ]
+}
