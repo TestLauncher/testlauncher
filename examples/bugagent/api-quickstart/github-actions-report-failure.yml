@@ -28,13 +28,13 @@ jobs:
         if: steps.tests.outcome == 'failure'
         env:
           BUGAGENT_API_KEY: ${{ secrets.BUGAGENT_API_KEY }}
-          BUGAGENT_PROJECT: ${{ vars.BUGAGENT_PROJECT }}
+          BUGAGENT_PROJECT_ID: ${{ vars.BUGAGENT_PROJECT_ID }}
         run: |
-          test -n "$BUGAGENT_PROJECT" || { echo "BUGAGENT_PROJECT is required" >&2; exit 1; }
+          test -n "$BUGAGENT_PROJECT_ID" || { echo "BUGAGENT_PROJECT_ID is required" >&2; exit 1; }
           node .github/scripts/bugagent.mjs report \
             --title "CI failed: ${{ github.repository }} #${{ github.run_number }}" \
             --description "GitHub Actions run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
-            --project "$BUGAGENT_PROJECT" \
+            --project-id "$BUGAGENT_PROJECT_ID" \
             --severity s3
       - name: Preserve failed job status
         if: steps.tests.outcome == 'failure'

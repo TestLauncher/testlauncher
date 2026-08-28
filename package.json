@@ -7,7 +7,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node --test",
+    "test": "node --test && python3 -m unittest discover -s examples/bugagent/api-quickstart -p 'test_*.py'",
     "check": "node scripts/check-examples.mjs"
   }
 }

@@ -3,3 +3,5 @@
 !.env.example
 node_modules/
 coverage/
+__pycache__/
+*.py[cod]
