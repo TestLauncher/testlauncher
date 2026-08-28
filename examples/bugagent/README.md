@@ -9,6 +9,9 @@ customer data, private product source, or required paid dependency.
 | [MCP quickstart](./mcp/) | Claude Code, Cursor, and other MCP clients | Bug-report tools are available on Free |
 | [Hermes Agent](./hermes-agent/) | Running an approved suite with an external agent | Community preview; bounded evaluation is available on Free |
 
+Read the [developer manual](../../docs/bugagent/) before moving an example from
+local/staging use into a production integration.
+
 ## Security rules
 
 1. Create a dedicated key in the intended bugAgent workspace.

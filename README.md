@@ -16,6 +16,8 @@ copy into another repository:
   GitHub Actions run.
 - [bugAgent MCP quickstart](./examples/bugagent/mcp/) - connect an AI client and
   use project-scoped bug-report workflows.
+- [bugAgent developer manual](./docs/bugagent/) - authentication, tenant
+  boundaries, retries, versioning, MCP lifecycle, outputs, and errors.
 - [bugAgent for Hermes Agent](./examples/bugagent/hermes-agent/) - public
   community preview for executing a human-curated suite through a
   bugAgent-maintained skill.

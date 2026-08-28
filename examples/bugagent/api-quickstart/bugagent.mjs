@@ -1,6 +1,13 @@
 import { pathToFileURL } from 'node:url';
 
 const DEFAULT_BASE_URL = 'https://app.bugagent.com';
+const RETRYABLE_STATUS = new Set([429, 502, 503, 504]);
+
+function retryDelayMs(response, attempt) {
+  const retryAfter = Number(response.headers.get('retry-after'));
+  if (Number.isFinite(retryAfter) && retryAfter >= 0) return retryAfter * 1000;
+  return Math.min(30_000, 500 * (2 ** attempt));
+}
 
 function boundedLimit(value, fallback = 10) {
   const parsed = Number(value ?? fallback);
@@ -14,6 +21,9 @@ export function createBugAgentClient({
   apiKey = process.env.BUGAGENT_API_KEY,
   baseUrl = process.env.BUGAGENT_BASE_URL || DEFAULT_BASE_URL,
   fetchImpl = globalThis.fetch,
+  sleepImpl = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds)),
+  timeoutMs = 20_000,
+  maxReadRetries = 3,
 } = {}) {
   if (!apiKey?.startsWith('ba_live_')) {
     throw new Error('Set BUGAGENT_API_KEY to a workspace-scoped ba_live_ key');
@@ -22,15 +32,23 @@ export function createBugAgentClient({
 
   const origin = new URL(baseUrl);
   async function request(path, options = {}) {
-    const response = await fetchImpl(new URL(path, origin), {
-      ...options,
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-        ...(options.body ? { 'Content-Type': 'application/json' } : {}),
-        ...options.headers,
-      },
-    });
+    const method = options.method || 'GET';
+    let response;
+    for (let attempt = 0; ; attempt += 1) {
+      response = await fetchImpl(new URL(path, origin), {
+        ...options,
+        method,
+        signal: options.signal || AbortSignal.timeout(timeoutMs),
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+          ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+          ...options.headers,
+        },
+      });
+      if (method !== 'GET' || !RETRYABLE_STATUS.has(response.status) || attempt >= maxReadRetries) break;
+      await sleepImpl(retryDelayMs(response, attempt));
+    }
     const text = await response.text();
     let payload = null;
     try {
@@ -51,22 +69,27 @@ export function createBugAgentClient({
     listProjects() {
       return request('/api/projects');
     },
-    listReports({ project, status, limit } = {}) {
+    listReports({ project, projectId, status, limit, offset } = {}) {
       const query = new URLSearchParams({ limit: String(boundedLimit(limit)) });
       if (project) query.set('project', project);
+      if (projectId) query.set('project_id', projectId);
       if (status) query.set('status', status);
+      if (offset !== undefined) query.set('offset', String(offset));
       return request(`/api/reports?${query}`);
     },
-    createReport({ title, description, project, severity = 's3', type = 'logic' } = {}) {
+    createReport({ title, description, projectId, severity = 's3', type = 'logic' } = {}) {
       if (typeof title !== 'string' || title.trim().length < 3) {
         throw new Error('title must contain at least 3 characters');
+      }
+      if (typeof projectId !== 'string' || !projectId.trim()) {
+        throw new Error('projectId is required; resolve it with the projects command');
       }
       return request('/api/reports', {
         method: 'POST',
         body: JSON.stringify({
           title: title.trim(),
           description: description?.trim() || undefined,
-          project: project?.trim() || undefined,
+          project_id: projectId.trim(),
           severity,
           type,
           metadata: { source: 'public-api-quickstart' },
@@ -84,7 +107,7 @@ function flags(tokens) {
     if (!flag?.startsWith('--') || value === undefined) {
       throw new Error(`Expected --name value, received: ${tokens.slice(index).join(' ')}`);
     }
-    parsed[flag.slice(2).replaceAll('-', '_')] = value;
+    parsed[flag.slice(2).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] = value;
   }
   return parsed;
 }

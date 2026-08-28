@@ -5,15 +5,20 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('..', import.meta.url));
 const required = [
   'SECURITY.md',
+  'docs/bugagent/authentication-security.md',
+  'docs/bugagent/rest-contract.md',
+  'docs/bugagent/mcp-contract.md',
   '.github/dependabot.yml',
   'examples/bugagent/README.md',
   'examples/bugagent/api-quickstart/bugagent.mjs',
+  'examples/bugagent/api-quickstart/bugagent.py',
   'examples/bugagent/api-quickstart/github-actions-report-failure.yml',
   'examples/bugagent/mcp/README.md',
+  'examples/bugagent/mcp/mcp-client.mjs',
   'examples/bugagent/hermes-agent/config.example.yaml',
   'skills/bugagent-qa/SKILL.md',
 ];
-const textExtensions = new Set(['.json', '.md', '.mjs', '.yaml', '.yml']);
+const textExtensions = new Set(['.json', '.md', '.mjs', '.py', '.yaml', '.yml']);
 const secretPatterns = [
   /ba_live_[a-f0-9]{32,}/i,
   /xox[baprs]-[a-z0-9-]{20,}/i,
@@ -85,6 +90,17 @@ if (!hermesReadme.includes('public community preview; private pilot validation p
 }
 if (!hermesReadme.replace(/\s+/g, ' ').includes('MCP tool filter does not enforce browser or network egress')) {
   failures.push('Hermes README must distinguish MCP filtering from runtime egress controls');
+}
+
+const workflow = await readFile(
+  join(root, 'examples/bugagent/api-quickstart/github-actions-report-failure.yml'),
+  'utf8',
+);
+for (const token of ['BUGAGENT_PROJECT_ID', '--project-id "$BUGAGENT_PROJECT_ID"', 'permissions:', 'contents: read']) {
+  if (!workflow.includes(token)) failures.push('GitHub Actions example is missing: ' + token);
+}
+if (/^\s*pull_request(?:_target)?:/m.test(workflow)) {
+  failures.push('Secret-bearing GitHub Actions example must not run on pull-request events');
 }
 
 if (failures.length > 0) {

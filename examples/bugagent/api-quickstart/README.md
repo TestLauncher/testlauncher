@@ -28,17 +28,16 @@ with a connection check:
 node bugagent.mjs projects
 ```
 
-Copy an exact project slug from that response before creating a report. The API
-uses the workspace default when no valid project selector is supplied, so
-automation that must target one project should also verify the returned
-`project_id`.
+Copy the exact project UUID from that response before creating a report. Names
+and slugs are convenient for humans but may become ambiguous; durable
+automation should send and verify `project_id`.
 
 ```bash
-node bugagent.mjs bugs --project bugagent --status new --limit 10
+node bugagent.mjs bugs --project-id YOUR_PROJECT_UUID --status new --limit 10
 node bugagent.mjs report \
   --title "Checkout total changes after refresh" \
   --description "Steps: add two items and refresh. Expected: total stays fixed. Actual: discount disappears." \
-  --project bugagent \
+  --project-id YOUR_PROJECT_UUID \
   --severity s2
 ```
 
@@ -54,7 +53,8 @@ existing test workflow. Add:
 
 - `BUGAGENT_API_KEY` as a GitHub Actions secret, using a dedicated key with only
   `reports:write`;
-- `BUGAGENT_PROJECT` as a repository variable containing the exact project slug.
+- `BUGAGENT_PROJECT_ID` as a repository variable containing the exact project UUID
+  returned by `GET /api/projects`.
 
 The example preserves the failed job status after filing the report and links
 the bug back to the workflow run. It intentionally does not upload logs or
@@ -74,6 +74,14 @@ export BUGAGENT_BASE_URL='http://localhost:4321'
 ```
 
 The script never prints the API key. HTTP failures include the status and the
-server's safe error message.
+server's safe error message. Read requests retry bounded `429`, `502`, `503`,
+and `504` responses; writes are not retried automatically.
+
+Python users can run the equivalent zero-dependency-standard-library example:
+
+```bash
+python3 bugagent.py projects
+python3 bugagent.py bugs --project-id YOUR_PROJECT_UUID --limit 10
+```
 
 Full reference: [bugagent.com/api-reference](https://bugagent.com/api-reference/).
