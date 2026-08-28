@@ -36,6 +36,26 @@ The [direct MCP example](../../examples/bugagent/mcp/) parses both formats.
   back to a different project. Use a project UUID returned by `list_projects`
   for unattended writes.
 
+### OAuth protected resource
+
+Delegated OAuth uses the canonical RFC 8707 resource identifier:
+
+```text
+https://mcp.bugagent.com/mcp
+```
+
+RFC 9728 metadata is published at
+`https://mcp.bugagent.com/.well-known/oauth-protected-resource/mcp`. Clients
+that expose a resource or audience field should use the canonical identifier
+exactly. Compatible clients that omit the parameter are bound to the same
+resource by the authorization server.
+
+OAuth tokens are opaque and specific to one MCP client, user, resource, and
+scope set. They are not interchangeable with `ba_live_` workspace API keys and
+must not be forwarded to the REST API or another MCP server. Refresh tokens
+rotate; replace the stored value after every successful refresh and never retry
+with the prior value.
+
 ## Outputs
 
 All tools return human-readable `content`. Tools with declared output schemas
@@ -46,6 +66,8 @@ status, and tolerate additive fields.
 ## Failure handling
 
 - HTTP `401`: replace or refresh the credential.
+- OAuth `invalid_grant`: discard the authorization code or old refresh token
+  and begin a new authorization flow; do not replay it.
 - HTTP `429`: honor `Retry-After` and back off.
 - JSON-RPC error: correct the request envelope before retrying.
 - `isError: true`: read the returned tool content and correct the input,

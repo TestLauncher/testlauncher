@@ -33,6 +33,12 @@ logs, screenshots, or an issue description.
 An MCP tool omitted from the API-key allowlist remains delegated-OAuth-only,
 regardless of which scopes a key has.
 
+The REST server applies the same rule by method and path. A workspace API key
+is accepted only when the public endpoint card names an API-key scope and the
+key contains that exact scope. Other authenticated routes require a dashboard
+session and return `403` to API keys. Do not treat an undocumented route as an
+integration contract even if it shares the public application origin.
+
 ## Rotation and revocation
 
 For zero-downtime rotation:
@@ -53,8 +59,26 @@ connector identifies the MCP client; calls execute as the signed-in user and
 that user's active bugAgent workspace. Confirm the active workspace before
 approving consent on a multi-workspace account.
 
+The canonical OAuth protected resource is:
+
+```text
+https://mcp.bugagent.com/mcp
+```
+
+Standards-aware clients discover it from:
+
+```text
+https://mcp.bugagent.com/.well-known/oauth-protected-resource/mcp
+```
+
+When a client asks for a resource or audience, use the canonical value exactly.
+bugAgent binds opaque access and rotating refresh tokens to that resource, the
+OAuth client, the signed-in user, and the granted scopes. A token issued for a
+different resource or presented by another OAuth client is rejected.
+
 Do not forward a bugAgent OAuth token to another service or treat it as a
-general-purpose API token.
+general-purpose API or workspace key. Do not attempt to inspect or decode an
+OAuth token; it is intentionally opaque.
 
 ## Browser capture keys
 
