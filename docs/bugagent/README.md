@@ -19,6 +19,8 @@ It complements the live endpoint and tool references:
 
 REST and MCP overlap, but they are not guaranteed to expose identical
 operations. Use only the contract documented for the interface you selected.
+The REST reference's method, path, audience, and named scope are enforced
+server-side; proximity to another public endpoint does not grant API-key access.
 
 ## Read next
 
