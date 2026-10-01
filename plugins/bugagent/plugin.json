@@ -1,0 +1,26 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "bugagent",
+  "version": "0.1.0-preview.1",
+  "description": "Capture bugs with approval, check possible duplicates, and look up reports in bugAgent using an existing bugAgent license.",
+  "author": { "name": "TestLauncher", "url": "https://testlauncher.com" },
+  "homepage": "https://bugagent.com",
+  "repository": "https://github.com/TestLauncher/testlauncher",
+  "license": "MIT",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "bugAgent",
+        "shortDescription": "Capture and find bug reports",
+        "longDescription": "For teams using an existing bugAgent license: capture a bug after reviewing and approving its draft, check possible duplicates, and look up reports in authorized projects. Screenshot descriptions can be included as text; image uploads must be completed in the ticket UI. Administration, deletion, automation, and test-case creation are not supported.",
+        "developerName": "TestLauncher",
+        "category": "Productivity",
+        "capabilities": ["Read", "Write"],
+        "websiteURL": "https://bugagent.com",
+        "supportURL": "https://bugagent.com/docs/#support",
+        "privacyPolicyURL": "https://bugagent.com/privacy/",
+        "termsOfServiceURL": "https://bugagent.com/terms/"
+      }
+    }
+  }
+}

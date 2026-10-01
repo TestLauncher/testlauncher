@@ -21,3 +21,6 @@ jobs:
           python-version: '3.13'
       - run: npm test
       - run: npm run check
+      - run: node scripts/bugagent-plugin.mjs validate
+      - run: node scripts/bugagent-plugin.mjs build
+      - run: node scripts/bugagent-plugin.mjs validate-zip

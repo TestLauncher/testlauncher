@@ -1,0 +1,12 @@
+{
+  "name": "testlauncher",
+  "interface": { "displayName": "TestLauncher Previews" },
+  "plugins": [
+    {
+      "name": "bugagent",
+      "source": { "source": "local", "path": "./plugins/bugagent" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    }
+  ]
+}
