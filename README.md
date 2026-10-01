@@ -16,6 +16,9 @@ copy into another repository:
   GitHub Actions run.
 - [bugAgent MCP quickstart](./examples/bugagent/mcp/) - connect an AI client and
   use project-scoped bug-report workflows.
+- [bugAgent capture plugin preview](./plugins/bugagent/) - public source for
+  scoped report lookup, possible-duplicate checks, and approved bug creation.
+  Hosted activation and directory publication are pending.
 - [bugAgent developer manual](./docs/bugagent/) - authentication, tenant
   boundaries, retries, versioning, MCP lifecycle, outputs, and errors.
 - [bugAgent for Hermes Agent](./examples/bugagent/hermes-agent/) - public
@@ -32,6 +35,7 @@ general platform protections still apply.
 
 - `examples/` - runnable product integrations and starter code.
 - `skills/` - installable agent skills published in standard skill-repo form.
+- `plugins/` - portable plugin packages and their validation instructions.
 - `.github/workflows/` - checks that keep every published example runnable and
   free of committed credentials.
 
