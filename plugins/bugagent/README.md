@@ -4,22 +4,27 @@ Public source for bug capture, possible-duplicate checking and report lookup wit
 an existing [bugAgent](https://bugagent.com) license. This MIT-licensed
 package does not grant a bugAgent service license or change service entitlements.
 
-**Preview source, not a published directory plugin.** The intended endpoint is
-`https://mcp.bugagent.com/mcp/capture`; hosted readiness has not been verified by
-this package work. The package has not been submitted, approved or published.
+**Unpublished tester preview: 0.1.0-preview.2.** The production endpoint
+`https://mcp.bugagent.com/mcp/capture` is live. The package is not submitted,
+approved or published in the OpenAI directory. Full authenticated ChatGPT OAuth
+end-to-end testing remains **UNVERIFIED**.
 
 ## Implementation and launch status
 
-The backend implementer confirms capture_get_profile is implemented and
-capture_get_report requires a report_id UUID. The parent reports that focused
-local database/UI smoke checks passed twice. Those results were not independently
-run here and do not establish hosted OAuth or directory readiness.
+Production v19.18 release verification records successful protected-resource
+metadata checks, HTTP 200 discovery of the five capture tools, and HTTP 401 for
+an anonymous tool call. Those checks establish endpoint availability and an
+authentication boundary, not successful sign-in or an authenticated report flow.
+They were not rerun during this documentation update.
 
-Directory launch remains blocked on hosted OAuth/reviewer verification and the
-publisher's submission access. Pagination and other explicitly provisional
-contract details still need confirmation. Listing assets and the eight proposed
-directory review cases remain checklist gates; the local smoke checks do not
-mark those cases executed. Local discovery and a validated ZIP are not publication.
+The five-tool interface, report_id UUID, inputs, defaults, pagination and retry
+behavior are documented in the implementation-verified [contract](MCP-CONTRACT.md).
+The pagination contract is confirmed, not provisional.
+
+Directory launch remains blocked on full hosted OAuth/reviewer verification and
+publisher submission access. Listing assets and the eight proposed review cases
+remain checklist gates. Endpoint discovery, local smoke, package validation and
+local installation are not proof of an authenticated end-to-end pass or publication.
 
 ## Scope
 
@@ -38,10 +43,18 @@ Administration, deletion, automation and test-case creation are outside this MVP
 
 The repository's `.agents/plugins/marketplace.json` points to `./plugins/bugagent`
 relative to the repository root. It supports local discovery, not public directory
-approval or automatic installation. After endpoint/authentication verification,
-refresh the host's marketplace and install the preview deliberately. Never paste
-credentials into this package or chat. Complete authentication through the host's
-secure connection UI; the final supported flow must still be verified.
+approval or automatic installation. Use the desktop repo-marketplace workflow to
+test before directory submission; full ChatGPT OAuth remains unverified. Never
+paste credentials into this package or chat. Use the host's secure connection UI.
+
+Tester instructions are in `plugins/bugagent/TESTING.md` in the source checkout.
+That repository-only guide is not included in the ZIP's fixed file allowlist.
+This internal tester preview requires a dedicated account provisioned by the test
+owner. Public source and an existing license do not automatically grant external
+users access to this tester program. Use only synthetic data in the TestLauncher
+workspace's Test Bed project. Do not test customer projects or the
+production bugAgent project. No staging access or public staging endpoint is
+implied.
 
 Do not substitute the general bugAgent MCP endpoint if the preview is unavailable.
 Offline drafting remains possible; no successful capture should be claimed.
@@ -83,7 +96,7 @@ it is not a general JSON Schema implementation. OpenAI extension semantics are
 checked separately by the local package validator, since the portable schema
 allows host-defined extension objects.
 
-See [interface assumptions](MCP-CONTRACT.md), the [submission checklist](SUBMISSION.md),
+See the [implemented interface](MCP-CONTRACT.md), the [submission checklist](SUBMISSION.md),
 and [proposed review cases](REVIEW-CASES.md). All eight review cases are unexecuted.
 
 ## Format references
@@ -104,8 +117,8 @@ This verifies the public pages, not the capture endpoint or legal sufficiency.
 
 Listing descriptions describe intended functionality without preview/trial/demo
 wording. That wording change is not a readiness claim: keep this package out of
-submission until the complete hosted runtime, account identity, pagination
-contract, review cases, and listing assets have been verified. The README and
+submission until the authenticated hosted workflow, account identity, review
+cases, and listing assets have been verified. The README and
 submission checklist remain the source of release status.
 
 Package source is covered by [MIT](LICENSE). Hosted bugAgent access remains subject
