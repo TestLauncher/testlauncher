@@ -1,12 +1,14 @@
 # Restricted MCP contract
 
 Public interface summary verified by read-only inspection of the backend capture
-implementation. This documents implemented behavior, not hosted availability or
-directory approval. No live MCP calls were made. Hosted OAuth/reviewer validation
-and publisher access remain pending; this is preview source, not a published
-directory plugin.
+implementation, including pagination and retry behavior. Production v19.18 release
+checks verified protected-resource metadata, five-tool discovery (HTTP 200), and
+rejection of anonymous tool calls (HTTP 401). These checks do not establish an
+authenticated ChatGPT end-to-end pass. Full hosted OAuth/reviewer validation and
+publisher access remain pending; this is preview source, not a published
+directory plugin. This documentation update made no live MCP calls.
 
-Intended transport: Streamable HTTP at https://mcp.bugagent.com/mcp/capture only.
+Live production transport: Streamable HTTP at https://mcp.bugagent.com/mcp/capture only.
 Use the host's secure connection flow. Never include credentials in this package.
 
 ## Inputs and defaults

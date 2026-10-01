@@ -1,17 +1,20 @@
 # Secure submission checklist
 
 Status: preview source; NOT submitted, approved or published in the directory.
-Hosted endpoint/OAuth readiness is not verified by this package work. Directory
-launch is pending hosted OAuth/reviewer verification and publisher access.
+The production capture endpoint is live; full authenticated ChatGPT OAuth
+end-to-end testing remains unverified. Directory launch is pending hosted
+OAuth/reviewer verification and publisher access.
 This checklist is a release gate, not a record of successful directory review.
 
-## Reported implementation progress
+## Verified release scope
 
-- Backend implementer confirms capture_get_profile is implemented and report_id
-  is a UUID. See MCP-CONTRACT.md for the remaining assumptions.
-- Parent reports two passing focused local database/UI smoke checks. These were
-  not independently rerun here and do not verify hosted OAuth, reviewer access,
-  directory approval, or execution of the eight proposed review cases.
+- Production v19.18 release checks verified protected-resource metadata, five-tool
+  discovery (HTTP 200) and anonymous tool-call rejection (HTTP 401). This docs
+  update did not repeat those checks or perform an authenticated flow.
+- The implemented five-tool contract, report_id UUID, pagination, defaults and
+  retry rules are documented in MCP-CONTRACT.md, not provisional placeholders.
+- The unpublished tester package is 0.1.0-preview.2. Local installation is not
+  directory publication. All eight proposed review cases remain unexecuted.
 
 ## Public content and package
 
@@ -30,10 +33,10 @@ This checklist is a release gate, not a record of successful directory review.
 
 ## Endpoint and review gates
 
-- [ ] Confirm deployment and independently verify the intended restricted HTTPS endpoint;
-  do not replace it with the broader MCP service. Remove preview claims only when
-  the corresponding checks have evidence.
-- [ ] Confirm every assumption in MCP-CONTRACT.md with tools/list. Verify secure
+- [ ] Verify the full authenticated workflow on the live restricted HTTPS endpoint;
+  do not replace it with the broader MCP service. Metadata/discovery/401 checks
+  alone do not close this gate or remove tester-preview status.
+- [ ] Check the advertised tools against MCP-CONTRACT.md. Verify secure
   authentication, entitlements, expiry/revocation, tenant isolation, denied-scope
   failures, the five-tool allowlist, input limits and rate limiting.
 - [ ] Verify capture_get_profile accepts only an empty object, uses validated
@@ -42,7 +45,8 @@ This checklist is a release gate, not a record of successful directory review.
   refresh, distinct identities for distinct accounts, and failure on invalid auth.
 - [ ] Verify write approval and request-id validation, idempotency/retry behavior,
   accurate tool annotations and no unintended downstream writes or uploads.
-- [ ] Prepare a dedicated sample-data reviewer account, never customer data. Supply
+- [ ] Prepare a dedicated tester/reviewer account restricted to synthetic data in
+  TestLauncher's Test Bed project, never customer projects or data. Supply
   access details only through private portal review fields, never GitHub or ZIP.
   Verify the complete hosted OAuth sign-in and reviewer flow before submission.
 - [ ] Run and record all five positive and three negative cases in REVIEW-CASES.md

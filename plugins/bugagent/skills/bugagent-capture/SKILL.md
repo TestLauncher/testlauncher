@@ -5,9 +5,10 @@ description: Capture a bug in bugAgent with approval, check possible duplicates,
 
 # bugAgent Capture (Preview)
 
-The intended restricted endpoint is https://mcp.bugagent.com/mcp/capture.
-Hosted readiness is not yet verified. Do not claim availability or a successful
-write without a real successful tool response. An existing bugAgent license and
+The live restricted endpoint is https://mcp.bugagent.com/mcp/capture.
+Endpoint discovery and anonymous-call rejection have been verified; full
+authenticated ChatGPT OAuth end-to-end testing remains unverified. Do not claim
+a successful write without a real successful tool response. An existing bugAgent license and
 authorized connection are required; installation grants neither access nor a license.
 If the connection is unavailable, draft locally in chat and explain the preview
 limitation. Never switch to the broader MCP endpoint or another integration.
@@ -18,6 +19,16 @@ schemas before use. Read [the implementation-verified contract](../../MCP-CONTRA
 for inputs, defaults, response envelopes, pagination and retry limits. Hosted
 OAuth and directory launch remain pending. Stop
 and report an incompatible interface rather than guessing fields or bypassing scope.
+
+## Internal tester-preview boundary
+
+For this internal, unpublished tester preview, use only synthetic data in the TestLauncher
+workspace's Test Bed project with a dedicated authorized tester account. Never
+test customer projects or the production bugAgent project. If the intended
+workspace/project cannot be identified unambiguously, stop. Do not infer IDs or
+borrow a different account to bypass access. Access must be provisioned by the
+test owner; public source does not grant an external user an account or preview
+access. Endpoint availability is not directory availability.
 
 ## Resolve scope and look up reports
 
